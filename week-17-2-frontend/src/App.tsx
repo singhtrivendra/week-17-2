@@ -4,6 +4,7 @@ import ChatHeader from './components/ChatHeader';
 import ChatMessages from './components/ChatMessages';
 import MessageInput from './components/MessageInput';
 
+
 export interface Message {
   text: string;
   color: string;
@@ -59,9 +60,9 @@ function App() {
       setUserId(newId);
     }
     // Connect to the backend WebSocket (assumes port 8080)
-    const wsUrl = `${
-      window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-    }//${window.location.hostname}:8080`;
+    const wsUrl = process.env.REACT_APP_WS_URL || 
+    `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.hostname}:8080`;
+  
     const ws = new WebSocket(wsUrl);
 
     ws.onopen = () => {
