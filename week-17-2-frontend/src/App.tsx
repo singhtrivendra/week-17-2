@@ -60,10 +60,10 @@ function App() {
       setUserId(newId);
     }
     // Connect to the backend WebSocket (assumes port 8080)
-    const wsUrl = process.env.REACT_APP_WS_URL || 
-    `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.hostname}:8080`;
-  
+    const wsUrl = (process as any).env.REACT_APP_WS_URL || "ws://localhost:8080";
     const ws = new WebSocket(wsUrl);
+    
+  
 
     ws.onopen = () => {
       ws.send(
