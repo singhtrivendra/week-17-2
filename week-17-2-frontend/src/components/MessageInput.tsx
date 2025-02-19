@@ -16,11 +16,11 @@ const MessageInput: React.FC<MessageInputProps> = ({ inputMessage, setInputMessa
           value={inputMessage}
           onChange={(e) => setInputMessage(e.target.value)}
           placeholder="Type your message..."
-          className="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none"
+          className="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-transparent outline-none"
         />
         <button
           type="submit"
-          className="bg-purple-600 text-white p-3 rounded-lg hover:bg-purple-700 transition duration-200"
+          className="bg-emerald-600 text-white p-3 rounded-lg hover:bg-emerald-700 transition duration-200"
         >
           <Send className="w-6 h-6" />
         </button>

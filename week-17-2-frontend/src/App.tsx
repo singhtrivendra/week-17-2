@@ -3,6 +3,7 @@ import JoinScreen from './components/JoinScreen';
 import ChatHeader from './components/ChatHeader';
 import ChatMessages from './components/ChatMessages';
 import MessageInput from './components/MessageInput';
+import { LandingPage } from './components/LandingPage';
 
 
 export interface Message {
@@ -19,10 +20,12 @@ function App() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [username, setUsername] = useState('');
-  const [roomId, setRoomId] = useState(""); // dynamic room id
+  const [roomId, setRoomId] = useState(""); 
   const [userId, setUserId] = useState('');
   const [isJoined, setIsJoined] = useState(false);
   const [activeUsers, setActiveUsers] = useState<number>(1);
+  const [isLanding, setIsLanding] = useState(true);
+
 
   // Refs
   const wsRef = useRef<WebSocket | null>(null);
@@ -154,7 +157,13 @@ function App() {
     wsRef.current?.close();
     setIsJoined(false);
     setMessages([]);
+    setIsLanding(true);
+
   };
+
+  if (isLanding) {
+    return <LandingPage onJoinChat={() => setIsLanding(false)} />;
+  }
 
   if (!isJoined) {
     return (
