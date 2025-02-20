@@ -1,11 +1,10 @@
+// In App.tsx
 import { useEffect, useState, useRef, FormEvent } from 'react';
-import JoinScreen from './components/JoinScreen';
-import ChatHeader from './components/ChatHeader';
-import ChatMessages from './components/ChatMessages';
-import MessageInput from './components/MessageInput';
+import { JoinScreen } from './components/JoinScreen';
+import {ChatHeader} from './components/ChatHeader';
+import {ChatMessages} from './components/ChatMessages';
+import {MessageInput} from './components/MessageInput';
 import { LandingPage } from './components/LandingPage';
-
-
 
 export interface Message {
   text: string;
@@ -21,12 +20,13 @@ function App() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [username, setUsername] = useState('');
-  const [roomId, setRoomId] = useState(""); 
+  const [roomId, setRoomId] = useState("");
   const [userId, setUserId] = useState('');
   const [isJoined, setIsJoined] = useState(false);
   const [activeUsers, setActiveUsers] = useState<number>(1);
   const [isLanding, setIsLanding] = useState(true);
-
+  const [isJoining, setIsJoining] = useState(false);
+  const [joinError, setJoinError] = useState('');
 
   // Refs
   const wsRef = useRef<WebSocket | null>(null);
@@ -64,11 +64,8 @@ function App() {
       setUserId(newId);
     }
     // Connect to the backend WebSocket (assumes port 8080)
-    // const wsUrl = REACT_APP_WS_URL || "ws://localhost:8080"; 
     const ws = new WebSocket("https://week-17-2.onrender.com");
     
-  
-
     ws.onopen = () => {
       ws.send(
         JSON.stringify({
@@ -77,12 +74,12 @@ function App() {
         })
       );
       setIsJoined(true);
+      setIsJoining(false); // stop loading once joined
     };
 
     ws.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
-        // If it's a user count update, update activeUsers and return.
         if (data.type === "userCount" && data.payload && data.payload.activeUsers !== undefined) {
           setActiveUsers(data.payload.activeUsers);
           return;
@@ -119,35 +116,22 @@ function App() {
     };
 
     ws.onclose = () => {
+      // If the connection closes before joining successfully, show error
+      if (!isJoined) {
+        setJoinError("Failed to join chat. Please try again.");
+        setIsJoining(false);
+      }
       setIsJoined(false);
     };
 
     wsRef.current = ws;
   };
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    if (inputMessage.trim() !== '' && wsRef.current) {
-      const messageObj = {
-        text: inputMessage,
-        color: userColor.current,
-        username,
-        avatar: clientAvatar.current,
-        userId,
-      };
-      wsRef.current.send(
-        JSON.stringify({
-          type: 'chat',
-          payload: { message: JSON.stringify(messageObj) }
-        })
-      );
-      setInputMessage('');
-    }
-  };
-
   const handleJoin = (e: FormEvent) => {
     e.preventDefault();
     if (username.trim() && roomId.trim()) {
+      setIsJoining(true);
+      setJoinError('');
       const newId = Math.random().toString(36).substr(2, 9);
       setUserId(newId);
       connectToRoom(username, roomId);
@@ -159,7 +143,6 @@ function App() {
     setIsJoined(false);
     setMessages([]);
     setIsLanding(true);
-
   };
 
   if (isLanding) {
@@ -174,6 +157,8 @@ function App() {
         setUsername={setUsername}
         setRoomId={setRoomId}
         handleJoin={handleJoin}
+        isJoining={isJoining}
+        error={joinError}
       />
     );
   }
@@ -194,7 +179,25 @@ function App() {
       <MessageInput 
         inputMessage={inputMessage}
         setInputMessage={setInputMessage}
-        handleSubmit={handleSubmit}
+        handleSubmit={(e) => {
+          e.preventDefault();
+          if (inputMessage.trim() && wsRef.current) {
+            const messageObj = {
+              text: inputMessage,
+              color: userColor.current,
+              username,
+              avatar: clientAvatar.current,
+              userId,
+            };
+            wsRef.current.send(
+              JSON.stringify({
+                type: 'chat',
+                payload: { message: JSON.stringify(messageObj) }
+              })
+            );
+            setInputMessage('');
+          }
+        }}
       />
     </div>
   );

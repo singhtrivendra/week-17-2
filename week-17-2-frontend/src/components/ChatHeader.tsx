@@ -8,7 +8,7 @@ interface ChatHeaderProps {
   handleLeave: () => void;
 }
 
-const ChatHeader: React.FC<ChatHeaderProps> = ({ roomId, activeUsers, handleCopyRoomId, handleLeave }) => {
+export const ChatHeader: React.FC<ChatHeaderProps> = ({ roomId, activeUsers, handleCopyRoomId, handleLeave }) => {
   return (
     <div className="bg-emerald-600 text-white p-4 shadow-md flex justify-between items-center">
       <div className="flex flex-col">
@@ -28,4 +28,3 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ roomId, activeUsers, handleCopy
   );
 };
 
-export default ChatHeader;

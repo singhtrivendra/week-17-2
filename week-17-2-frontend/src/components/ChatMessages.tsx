@@ -7,7 +7,7 @@ interface ChatMessagesProps {
   messagesEndRef: React.RefObject<HTMLDivElement | null>;
 }
 
-const ChatMessages: React.FC<ChatMessagesProps> = ({ messages, userId, messagesEndRef }) => {
+export const ChatMessages: React.FC<ChatMessagesProps> = ({ messages, userId, messagesEndRef }) => {
   return (
     <div className="flex-1 overflow-auto p-4 space-y-4">
       {messages.map((message, index) => {
@@ -48,4 +48,3 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ messages, userId, messagesE
   );
 };
 
-export default ChatMessages;

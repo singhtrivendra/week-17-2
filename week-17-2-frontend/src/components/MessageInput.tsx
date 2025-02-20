@@ -7,7 +7,7 @@ interface MessageInputProps {
   handleSubmit: (e: FormEvent) => void;
 }
 
-const MessageInput: React.FC<MessageInputProps> = ({ inputMessage, setInputMessage, handleSubmit }) => {
+export const MessageInput: React.FC<MessageInputProps> = ({ inputMessage, setInputMessage, handleSubmit }) => {
   return (
     <form onSubmit={handleSubmit} className="p-4 bg-white border-t">
       <div className="flex space-x-2">
@@ -29,4 +29,3 @@ const MessageInput: React.FC<MessageInputProps> = ({ inputMessage, setInputMessa
   );
 };
 
-export default MessageInput;
