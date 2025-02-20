@@ -6,6 +6,7 @@ import MessageInput from './components/MessageInput';
 import { LandingPage } from './components/LandingPage';
 
 
+
 export interface Message {
   text: string;
   color: string;
@@ -63,8 +64,8 @@ function App() {
       setUserId(newId);
     }
     // Connect to the backend WebSocket (assumes port 8080)
-    const wsUrl = (process as any).env.REACT_APP_WS_URL || "ws://localhost:8080";
-    const ws = new WebSocket(wsUrl);
+    // const wsUrl = REACT_APP_WS_URL || "ws://localhost:8080"; 
+    const ws = new WebSocket("https://week-17-2.onrender.com");
     
   
 
