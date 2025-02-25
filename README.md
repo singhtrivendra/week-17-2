@@ -1,117 +1,98 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Full-Stack Chat App</title>
-    <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
-        code { background: #f4f4f4; padding: 3px 6px; border-radius: 4px; }
-        pre { background: #f4f4f4; padding: 10px; border-radius: 5px; overflow-x: auto; }
-        h1, h2 { color: #333; }
-    </style>
-</head>
-<body>
+# Chat Application
 
-    <h1>🚀 Full-Stack Chat App</h1>
-    <p>A real-time chat application where users can join a chat room using a shared room ID or create a new room, invite friends, and start chatting.</p>
+This is a real-time chat application where users can join chat rooms using a shared room ID and start chatting. Users can also create a room, invite friends, and chat in real time.
 
-    <h2>✨ Features</h2>
-    <ul>
-        <li>✅ Create & join chat rooms</li>
-        <li>✅ Real-time messaging using WebSockets</li>
-        <li>✅ TypeScript-based backend</li>
-        <li>✅ Modern frontend with Vite + React</li>
-        <li>✅ Responsive UI with Tailwind CSS</li>
-    </ul>
+## Project Structure
 
-    <h2>🚀 Backend Setup (Node.js + TypeScript + WebSockets)</h2>
+The project consists of two main folders:
 
-    <h3>1️⃣ Initialize the Project</h3>
-    <pre><code>npm init -y</code></pre>
+- **Frontend**: Handles the user interface and WebSocket communication (**week-17-2-frontend**).
+- **Backend**: Manages WebSocket connections and message broadcasting (**week-17-chatapp**).
 
-    <h3>2️⃣ Install TypeScript & Configure</h3>
-    <pre><code>npm install typescript
-npx tsc --init</code></pre>
+The project folder is named **week-17-2**.
 
-    <h3>3️⃣ Set Up TypeScript Configuration (`tsconfig.json`)</h3>
-    <pre><code>{
-  "rootDir": "./src",
-  "outDir": "./dist"
-}</code></pre>
+## Installation
 
-    <h3>4️⃣ Install Dependencies</h3>
-    <pre><code>npm install express @types/express
-npm install ws @types/ws</code></pre>
+### 1. Clone the Repository
 
-    <h3>5️⃣ Create <code>server.ts</code></h3>
-    <pre><code>import express from "express";
-import { WebSocketServer } from "ws";
+```sh
+git clone <repository-url>
+cd week-17-2
+```
 
-const app = express();
-const server = app.listen(3000, () => console.log("Server running on port 3000"));
-const wss = new WebSocketServer({ server });
+### 2. Install Dependencies
 
-wss.on("connection", (ws) => {
-  console.log("New client connected");
+#### Backend
 
-  ws.on("message", (message) => {
-    wss.clients.forEach(client => client.send(message.toString()));
-  });
+```sh
+cd week-17-chatapp
+npm install
+```
 
-  ws.on("close", () => console.log("Client disconnected"));
-});
-</code></pre>
+#### Frontend
 
-    <h3>6️⃣ Start the Backend</h3>
-    <pre><code>npx tsc
-node dist/server.js</code></pre>
+```sh
+cd week-17-2-frontend
+npm install
+```
 
-    <h2>🎨 Frontend Setup (Vite + React + WebSockets)</h2>
+## Running the Application
 
-    <h3>1️⃣ Create a Vite App</h3>
-    <pre><code>npm create vite@latest my-chat-app --template react
-cd my-chat-app
-npm install</code></pre>
+### Start the Backend Server
 
-    <h3>2️⃣ Install WebSocket & Dependencies</h3>
-    <pre><code>npm install react-use-websocket</code></pre>
+```sh
+cd week-17-chatapp
+npm run dev
+```
 
-    <h3>3️⃣ Implement WebSocket Client (<code>App.tsx</code>)</h3>
-    <pre><code>import React, { useState } from "react";
-import useWebSocket from "react-use-websocket";
+### Start the Frontend
 
-const WS_URL = "ws://localhost:3000";
+```sh
+cd week-17-2-frontend
+npm run dev
+```
 
-export default function App() {
-  const { sendMessage, lastMessage } = useWebSocket(WS_URL);
-  const [message, setMessage] = useState("");
+## WebSocket Configuration
 
-  return (
-    <div className="p-5">
-      <h1 className="text-2xl">Chat App</h1>
-      <input
-        className="border p-2"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-      />
-      <button onClick={() => sendMessage(message)} className="ml-2 bg-blue-500 p-2 text-white">
-        Send
-      </button>
-      <p>Last message: {lastMessage?.data}</p>
-    </div>
-  );
-}
-</code></pre>
+Make sure to update the WebSocket URL in the frontend. Change the following line in your frontend WebSocket connection:
 
-    <h3>4️⃣ Start the Frontend</h3>
-    <pre><code>npm run dev</code></pre>
+```js
+const ws = new WebSocket("https://week-17-2.onrender.com");
+```
 
-    <h2>📌 Conclusion</h2>
-    <p>This is a basic <strong>full-stack chat application</strong> built with <strong>Node.js, TypeScript, WebSockets</strong>, and <strong>Vite (React)</strong>. Future improvements can include authentication, UI enhancements, and a database to store messages.</p>
+To:
 
-    <h2>📜 License</h2>
-    <p>MIT License - Feel free to use and modify.</p>
+```js
+const ws = new WebSocket("ws://localhost:8080");
+```
 
-</body>
-</html>
+## Features
+
+- Join a chat room using a shared room ID
+- Create a new room and invite friends
+- Real-time messaging using WebSockets
+- Simple and intuitive UI
+
+## Technologies Used
+
+- **Frontend**: React(TypeScript), Tailwind CSS
+- **Backend**: Node.js, Express, WebSockets
+
+## Future Enhancements
+
+- User authentication
+- Persistent chat history
+- Private messaging
+
+## Live Demo
+
+https://week-17-2-7mkj.vercel.app
+
+## Contributing
+
+Feel free to contribute by creating a pull request or submitting issues.
+
+## License
+
+This project is licensed under the MIT License.
+
